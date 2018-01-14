@@ -1,22 +1,16 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-	<meta charset="UTF-8">
-	<title>LoveLetter</title>
-	<link rel="stylesheet" href="../static/style.css">
-</head>
-<body>
+{% extends "base.html" %}
 
+{% block content %}
 <table class="tg">
   <tr>
-    <th class="tg-yw4l">Andżelika</th>
+    <th class="tg-yw4l">{{ player_1.username }}</th>
     <th class="tg-yw4l"></th>
     <th class="tg-yw4l"></th>
-    <th class="tg-yw4l" colspan="2">Brajan</th>
+    <th class="tg-yw4l" colspan="2">{{ player_2.username }}</th>
     <th class="tg-yw4l" colspan="2">Punkty</th>
     <th class="tg-yw4l"></th>
     <th class="tg-yw4l"></th>
-    <th class="tg-yw4l">Romaniusz</th>
+    <th class="tg-yw4l">{{ player_3.username }}</th>
   </tr>
   <tr>
     <td class="tg-yw4l">Punkty</td>
@@ -31,7 +25,7 @@
     <td class="tg-yw4l">Punkty</td>
   </tr>
   <tr>
-    <td class="tg-yw4l"><img src="img/karta_poziomo_test.jpg" alt=""></td>
+    <td class="tg-yw4l"><img src="../static/img/karta_poziomo_test.jpg" alt=""></td>
     <td class="tg-yw4l"></td>
     <td class="tg-yw4l"></td>
     <td class="tg-yw4l"></td>
@@ -40,28 +34,28 @@
     <td class="tg-yw4l"></td>
     <td class="tg-yw4l"></td>
     <td class="tg-yw4l"></td>
-    <td class="tg-yw4l"><img src="img/karta_poziomo_test.jpg" alt=""></td>
+    <td class="tg-yw4l"><img src="../static/img/karta_poziomo_test.jpg" alt=""></td>
   </tr>
   <tr>
-    <td class="tg-yw4l"><img src="img/karta_poziomo_test.jpg" alt=""></td>
+    <td class="tg-yw4l"><img src="../static/img/karta_poziomo_test.jpg" alt=""></td>
     <td class="tg-yw4l"></td>
     <td class="tg-yw4l"></td>
-    <td class="tg-yw4l" rowspan="2"><img src="img/karta_test.jpg" alt=""></td>
+    <td class="tg-yw4l" rowspan="2"><img src="../static/img/karta_test.jpg" alt=""></td>
     <td class="tg-yw4l" colspan="3" rowspan="2">Co sie teraz dzieje</td>
     <td class="tg-yw4l"></td>
     <td class="tg-yw4l"></td>
-    <td class="tg-yw4l"><img src="img/karta_poziomo_test.jpg" alt=""></td>
+    <td class="tg-yw4l"><img src="../static/img/karta_poziomo_test.jpg" alt=""></td>
   </tr>
   <tr>
-    <td class="tg-yw4l"><img src="img/karta_poziomo_test.jpg" alt=""></td>
+    <td class="tg-yw4l"><img src="../static/img/karta_poziomo_test.jpg" alt=""></td>
     <td class="tg-yw4l"></td>
     <td class="tg-yw4l"></td>
     <td class="tg-yw4l"></td>
     <td class="tg-yw4l"></td>
-    <td class="tg-yw4l"><img src="img/karta_poziomo_test.jpg" alt=""></td>
+    <td class="tg-yw4l"><img src="../static/img/karta_poziomo_test.jpg" alt=""></td>
   </tr>
   <tr>
-    <td class="tg-yw4l"><img src="img/karta_poziomo_test.jpg" alt=""></td>
+    <td class="tg-yw4l"><img src="../static/img/karta_poziomo_test.jpg" alt=""></td>
     <td class="tg-yw4l"></td>
     <td class="tg-yw4l"></td>
     <td class="tg-yw4l"></td>
@@ -70,26 +64,25 @@
     <td class="tg-yw4l"></td>
     <td class="tg-yw4l"></td>
     <td class="tg-yw4l"></td>
-    <td class="tg-yw4l"><img src="img/karta_poziomo_test.jpg" alt=""></td>
+    <td class="tg-yw4l"><img src="../static/img/karta_poziomo_test.jpg" alt=""></td>
   </tr>
   <tr>
     <td class="tg-yw4l"></td>
     <td class="tg-yw4l"></td>
     <td class="tg-yw4l"></td>
-    <td class="tg-yw4l"><img src="img/karta_test.jpg" alt=""></td>
-    <td class="tg-yw4l"><img src="img/karta_test.jpg" alt=""></td>
-    <td class="tg-yw4l"><img src="img/karta_test.jpg" alt=""></td>
-    <td class="tg-yw4l"><img src="img/karta_test.jpg" alt=""></td>
+    <td class="tg-yw4l"><img src="../static/img/karta_{{ player_me.cardplayed1 }}.jpg" alt=""></td>
+    <td class="tg-yw4l"><img src="../static/img/karta_{{ player_me.cardplayed2 }}.jpg" alt=""></td>
+    <td class="tg-yw4l"><img src="../static/img/karta_{{ player_me.cardplayed3 }}.jpg" alt=""></td>
+    <td class="tg-yw4l"><img src="../static/img/karta_{{ player_me.cardplayed4 }}.jpg" alt=""></td>
     <td class="tg-yw4l" colspan="3" rowspan="2">Podpowiedzi i instrukcje</td>
   </tr>
   <tr>
     <td class="tg-yw4l"></td>
-    <td class="tg-yw4l" colspan="2">MOje imię</td>
+    <td class="tg-yw4l" colspan="2">{{ player_me.username }}</td>
     <td class="tg-yw4l"></td>
-    <td class="tg-yw4l"><img src="img/karta_test.jpg" alt=""></td>
-    <td class="tg-yw4l"><img src="img/karta_test.jpg" alt=""></td>
+    <td class="tg-yw4l"><img src="../static/img/karta_{{ player_me.cardinhand1 }}.jpg" alt=""></td>
+    <td class="tg-yw4l"><img src="../static/img/karta_{{ player_me.cardinhand2 }}.jpg" alt=""></td>
     <td class="tg-yw4l"></td>
   </tr>
 </table>
-</body>
-</html>
+{% endblock %}
