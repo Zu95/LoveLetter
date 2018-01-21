@@ -4,7 +4,8 @@ class One:
     """
     def __init__(self):
         self.value = 1
-        self.name = ''
+        self.name = 'C3PO'
+        self.description = 'C3PO pomaga Ci zgadnąć kartę w ręce innego gracza, jeżeli macie rację - odpadnie on z rundy.'
 
     def effect(self, player, chosen_player, card):
         """
@@ -20,8 +21,10 @@ class One:
             chosen_player.active = False
             chosen_player.privateInfo = 'Gracz' + player.name + 'zgadł Twoją kartę, odpadasz z rundy' #gracz dowiaduje się, że przegrał
             chosen_player.cardsPlayed.append(chosen_player.cardsInHand[0]) #jego karta w ręce jest wykładana na stół
+            player.privateInfo = 'Miałeś rację'
             return 1
         else:
+            player.privateInfo = 'Nie miałeś racji'
             return 0
 
 
@@ -32,7 +35,8 @@ class Two:
     """
     def __init__(self):
         self.value = 2
-        self.name = ''
+        self.name = 'R2D2'
+        self.description = 'R2D2 wykradnie dla Ciebie informacje o karcie w ręce wybranego gracza.'
 
     def effect(self, player, chosen_player): #gracz pierwszy dostaje informację o karcie w ręce gracza drugiego
         player.privateInfo = 'Karta w ręce wybranego gracza to '+chosen_player.cardsInHand[0].name
@@ -45,7 +49,8 @@ class Three:
     """
     def __init__(self):
         self.value = 3
-        self.name = ''
+        self.name = 'Jedi'
+        self.description = 'Walczysz na miecze świetlne z przeciwnikiem. Porównajcie w sekrecie karty - ten z niższą wartością odpada.'
 
     def effect(self, player, chosen_player): #porównuje karty w ręce dwóch graczy, kto ma niższą odpada
         """
@@ -72,7 +77,8 @@ class Four:
     """
     def __init__(self):
         self.value = 4
-        self.name = ''
+        self.name = 'Sokół Millenium'
+        self.description = 'Sokół Millenium wchodzi w nadświetlną! Nikt nie może Ci nic zrobić do następnej Twojej kolejki.'
 
     def effect(self, player): #ustala dla danego gracza ochronę
         """
@@ -90,7 +96,8 @@ class Five:
     """
     def __init__(self):
         self.value = 5
-        self.name = ''
+        self.name = 'Wookie'
+        self.description = 'Wookie wytrąca kuszą kartę z ręki innego gracza, musi on dobrać nową.'
 
     def effect(self, chosen_player, game): #wybrany gracz odrzuca kartę i losuje nową
         """
@@ -113,7 +120,8 @@ class Six:
     """
     def __init__(self):
         self.value = 6
-        self.name = ''
+        self.name = 'Yoda'
+        self.description = 'Yoda używa mocy, żeby zamienić kartę w Twojej ręce z kartą w ręce innego gracza.'
 
     def effect(self, player, chosen_player):
         """
@@ -134,7 +142,8 @@ class Seven:
     """
     def __init__(self):
         self.value = 7
-        self.name = ''
+        self.name = 'Bobba Fett'
+        self.description = 'Bobba Fett jest super, ale boi się dziwnych stworzeń. Musisz go odrzucić, jeżeli masz w ręce Yodę albo Wookiego.'
 
     def effect(self):
         """
@@ -150,7 +159,8 @@ class Eight:
     """
     def __init__(self):
         self.value = 8
-        self.name = ''
+        self.name = 'Pokój w galaktyce'
+        self.description = 'Musisz utrzymać pokój w galaktyce, żeby zakon Jedi nie zginął. Jeżeli odrzucisz tą kartę - przegrasz.'
 
     def effect(self, player):
         """

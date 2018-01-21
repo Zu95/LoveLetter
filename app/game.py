@@ -82,29 +82,97 @@ class Game:
             card_played = player.cardsInHand[0] #w tym miejscu gracz podaje, którą kartę chce zagrać, teraz jest to pierwsza lepsza
             player.play_card(card=card_played) #zagrywa kartę z ręki
 
-            if (card_played.value == 1): #jeżeli gracz zagra kartę 1
+            if (card_played.value == 1):
+                """
+                Akcja przy zagraniu karty 1
+                """
                 player.privateInfo = 'Wybierz gracza'
                 choose_player = self.player3 #tu gracz podaje którego gracza wybiera
                 player.privateInfo = 'Zgadnij kartę tego gracza'
-                choose_card = 'R2D2' #tu gracz podaje, jaką kartę zgaduje, teraz domyślnie R2D2
-                self.currentInfo = 'Gracz myśli, że '+choose_player.name+' ma kartę '+choose_card #info dla pozostałych graczy
-                card_played.effect(player=player, chosen_player=choose_player, card=choose_card)
-            elif (card_played.value == 2): #jeżeli gracz zagra kartę 2
-                card_played.effect() #akcja dla 2
-            elif (card_played.value == 3):  # jeżeli gracz zagra kartę 3
-                card_played.effect() #akcja dla 3
-            elif (card_played.value == 4):  # jeżeli gracz zagra kartę 4
-                card_played.effect() #akcja dla 4
-            elif (card_played.value == 5):  # jeżeli gracz zagra kartę 5
-                card_played.effect() #akcja dla 5
-            elif (card_played.value == 6):  # jeżeli gracz zagra kartę 6
-                card_played.effect() #akcja dla 6
-            elif (card_played.value == 7):  # jeżeli gracz zagra kartę 7
+                choose_card = 'R2D2' #tu gracz podaje, jaką kartę zgaduje, w formacie string
+
+                if (choose_player.protected == False):
+                    self.currentInfo = 'Gracz myśli, że '+choose_player.name+' ma kartę '+choose_card
+                    if ((card_played.effect(player=player, chosen_player=choose_player, card=choose_card))==1):
+                        self.currentInfo += ' I ma rację, '+choose_player.name+' odpada'
+                    elif ((card_played.effect(player=player, chosen_player=choose_player, card=choose_card))==0):
+                        self.currentInfo += ' I nie ma racji, nic się nie dzieje'
+                else:
+                    self.currentInfo = 'Gracz '+choose_player.name+' jest chroniony'
+
+            elif (card_played.value == 2):
+                """
+                Akcja przy zagraniu karty 2
+                """
+                player.privateInfo = 'Wybierz gracza'
+                choose_player = self.player3  # tu gracz podaje którego gracza wybiera
+                if (choose_player.protected == False):
+                    card_played.effect(player=player, chosen_player=choose_player)
+                    self.currentInfo = 'Gracz '+player.name+' podejrzał kartę gracza '+choose_player.name
+                else:
+                    self.currentInfo = 'Gracz '+choose_player.name+' jest chroniony i nie można podejrzeć jego karty'
+
+            elif (card_played.value == 3):
+                """
+                Akcja przy zagraniu karty 3
+                """
+                player.privateInfo = 'Wybierz gracza'
+                choose_player = self.player3  # tu gracz podaje którego gracza wybiera
+                if (choose_player.protected == False):
+                    self.currentInfo = player.name+' pojedynkuje się z '+choose_player.name
+                    if ((card_played.effect(player=player, chosen_player=choose_player))==1):
+                        self.currentInfo += ' i wygrywa, ' + choose_player.name + ' odpada'
+                    elif ((card_played.effect(player=player, chosen_player=choose_player))==2):
+                        self.currentInfo += 'i przegrywa, ' + player.name + ' odpada'
+                    elif ((card_played.effect(player=player, chosen_player=choose_player))==0):
+                        self.currentInfo += 'i jest remis, nic się nie dzieje.'
+                else:
+                    self.currentInfo = 'Gracz '+choose_player.name+' jest chroniony i nie można się z nim pojedynkować'
+
+            elif (card_played.value == 4):
+                """
+                Akcja przy zagraniu karty 4
+                """
+                card_played.effect(player=player) #akcja dla 4
+                self.currentInfo = player.name+' jest chroniony do następnej swojej tury.'
+
+            elif (card_played.value == 5):
+                """
+                Akcja przy zagraniu karty 5
+                """
+                player.privateInfo = 'Wybierz gracza'
+                choose_player = self.player3  # tu gracz podaje którego gracza wybiera
+                if (choose_player.protected == False):
+                    card_played.effect(chosen_player=choose_player, game=self)
+                    self.currentInfo = choose_player.name+' ma nową kartę w ręce.'
+                else:
+                    self.currentInfo = 'Gracz '+choose_player.name+' jest chroniony i nie można wymienić jego kart.'
+
+            elif (card_played.value == 6):
+                """
+                Akcja przy zagraniu karty 6
+                """
+                player.privateInfo = 'Wybierz gracza'
+                choose_player = self.player3  # tu gracz podaje którego gracza wybiera
+                if (choose_player.protected == False):
+                    card_played.effect(player=player, chosen_player=choose_player) #akcja dla 6
+                    self.currentInfo = player.name+' i '+choose_player.name+' zamienili się kartami.'
+                else:
+                    self.currentInfo = 'Gracz '+choose_player.name+' jest chroniony i nie można się z nim wymienić kartą.'
+
+            elif (card_played.value == 7):
+                """
+                Akcja przy zagraniu karty 7
+                """
                 card_played.effect() #akcja dla 7
-            elif (card_played.value == 8):  # jeżeli gracz zagra kartę 8
-                card_played.effect() #akcja dla 8
+                self.currentInfo = player.name+' odrzucił kartę, nic to nie zmienia.'
 
+            elif (card_played.value == 8):
+                """
+                Akcja przy zagraniu karty 8
+                """
+                card_played.effect(player=player) #akcja dla 8
+                self.currentInfo = player.name+' odpada z rundy, bo nie utrzymał pokoju w galaktyce.'
 
-
-
-        else: pass # kolejka następnego gracza
+        else:
+            pass #kolejka następnego gracza
