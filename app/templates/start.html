@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <form method="GET" action="{{ url_for('game')}}">
+
+        <label for="players">Wybierz ilość graczy ludzi</label><br>
+            <input type="radio" name="mode" value="1" required>1<br>
+            <input type="radio" name="mode" value="2" required>2<br>
+            <input type="radio" name="mode" value="3" required>3<br>
+            <input type="radio" name="mode" value="4" required>4<br>
+        <br>
+        <label for="name">Podaj swoje imię</label><br>
+            <input type="text" name="name" required><br>
+
+        <input type="submit" value="Nowa gra">
+    </form>
+{% endblock %}

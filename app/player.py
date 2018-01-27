@@ -1,3 +1,4 @@
+from random import randint
 class Player:
     """
     Klasa obsługuje gracza
@@ -59,3 +60,20 @@ class Computer(Player):
         else:
             return self.cardsInHand[1]
 
+    def choose_player(self, cardplayed, *players):
+        """
+        Komputer wybiera gracza, na którego będzie działać karta
+        :param cardplayed: zagrana przez komputer karta
+        :param players: lista graczy, którzy są active w grze
+        :return: gracz
+        """
+        range = len(players)
+        x = randint(0, range-1)
+        return players[x]
+
+    def choose_card(self):
+        """
+        Funkcja wybiera za komputer kartę, która prawdopodobnie jest w ręce kogoś
+        :return:
+        """
+        return randint(2, 8)

@@ -7,14 +7,31 @@ class Game:
     """
     Klasa zawiera wszystkie informacje o danej rozgrywce
     """
-    def __init__(self, name, mode=1, p1='', p2='Anakin Skywalker', p3='Han Solo', p4='Jabba the Hutt'):
+    def __init__(self, name='gra', mode=1, p1='', p2='Darth Vader', p3='Palpatine', p4='Jabba the Hutt'):
         self.name = name
-        self.deck = [cards.Eight(), cards.Seven(), cards.Six(),
-                     cards.Five(), cards.Five(),
-                     cards.Four(), cards.Four(),
-                     cards.Three(), cards.Three(),
-                     cards.Two(), cards.Two(),
-                     cards.One(), cards.One(), cards.One(), cards.One(), cards.One()] #inicuję talię
+        #muszę stworzyć obiekty poszczególnych kart
+        self.card1a = cards.One()
+        self.card1b = cards.One()
+        self.card1c = cards.One()
+        self.card1d = cards.One()
+        self.card1e = cards.One()
+        self.card2a = cards.Two()
+        self.card2b = cards.Two()
+        self.card3a = cards.Three()
+        self.card3b = cards.Three()
+        self.card4a = cards.Four()
+        self.card4b = cards.Four()
+        self.card5a = cards.Five()
+        self.card5b = cards.Five()
+        self.card6 = cards.Six()
+        self.card7 = cards.Seven()
+        self.card8 = cards.Eight()
+        self.deck = [self.card6, self.card7, self.card8,
+                     self.card5a, self.card5b,
+                     self.card4a, self.card4b,
+                     self.card3a, self.card3b,
+                     self.card2a, self.card2b,
+                     self.card1a, self.card1b, self.card1c, self.card1d, self.card1e] #inicuję talię
         if(mode == 1): # jeden gracz vs 3 komputery, opcja domyślna
             self.player1 = player.Player(p1)
             self.player2 = player.Computer(p2, race='computer') #komputer
@@ -35,8 +52,6 @@ class Game:
             self.player2 = player.Player(p2)
             self.player3 = player.Player(p3)
             self.player4 = player.Player(p4)
-        else:
-            print('Nie ma takiego typu gry')
 
         self.players = [self.player1, self.player2, self.player3, self.player4] #tworzę listę 4 graczy
         self.currentInfo = 'Witamy w grze'
