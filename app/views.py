@@ -13,36 +13,32 @@ def start():
 def game():
     modeid = int(request.args.get('mode'))
     name = str(request.args.get('name'))
-    game = classgame.Game(mode=1, p1=name)
-    game.init_game()
-    for a in game.players:
+    newgame = classgame.Game(mode=1, p1=name)
+    newgame.init_game()
+    renderplayer = []
+    for a in newgame.players:
+        thisplayer = {'username': a.name, 'points': a.points, 'info': a.privateInfo}
         for j in range(2):
             try:
-                x = game.player1.cardsInHand[j]
+                thisplayer['cardinhand' + str(j+1)] = a.cardsInHand[j].value
+                thisplayer['cardinhand' + str(j+1)+'info'] = a.cardsInHand[j].description
             except:
-                a = cards.One()
-                game.player1.cardsInHand.append(a)
+                thisplayer['cardinhand' + str(j+1)] = 0
 
         for i in range(4):
             try:
-                x = game.player1.cardsPlayed[i]
+                thisplayer['cardplayed' + str(i + 1)] = a.cardsPlayed[i].value
             except:
-                a = cards.One()
-                game.player1.cardsPlayed.append(a)
+                thisplayer['cardplayed' + str(i + 1)] = 0
+        renderplayer.append(thisplayer)
 
-    player_me = {'username': game.players[0].name, 'points': game.player1.points,
-                 'cardinhand1': game.player1.cardsInHand[0].value, 'cardinhand2': game.player1.cardsInHand[1].value,
-                 'cardplayed1': game.player1.cardsPlayed[0].value, 'cardplayed2': game.player1.cardsPlayed[1].value, 'cardplayed3': game.player1.cardsPlayed[2].value, 'cardplayed4': game.player1.cardsPlayed[3].value,
-                 'info': game.player1.privateInfo}
-    player_1 = {'username': 'Roman',
-                'cardplayed1': '2', 'cardplayed2': '3', 'cardplayed3': '4', 'cardplayed4': '6'}
     player_2 = {'username': 'Andrzej',
                 'cardplayed1': '2', 'cardplayed2': '3', 'cardplayed3': '4', 'cardplayed4': '6'}
     player_3 = {'username': 'Andżelika',
                 'cardplayed1': '2', 'cardplayed2': '3', 'cardplayed3': '4', 'cardplayed4': '6'}
-    cards_remaining = game.cards_in_deck()
-    info = game.currentInfo
-    return render_template('index.html', player_me=player_me, player_1=player_1,
+    cards_remaining = newgame.cards_in_deck()
+    info = newgame.currentInfo
+    return render_template('index.html', player_me=renderplayer[0], player_1=renderplayer[1],
                            player_2=player_2, player_3=player_3, cards_remaining=cards_remaining, info=info)
 
 def index():

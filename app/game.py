@@ -77,11 +77,12 @@ class Game:
         Funkcja rozdaje karty na początek gry, najpierw usuwa jedną losową kartę z talii
         :return:
         """
-        self.deck.remove(self.choose())
-        self.player1.add_card(self.choose())
-        self.player2.add_card(self.choose())
-        self.player3.add_card(self.choose())
-        self.player4.add_card(self.choose())
+        removed = self.choose()
+        self.deck.remove(removed)
+        for x in self.players:
+            random = self.choose()
+            x.add_card(random)
+            self.deck.remove(random)
 
     def human_turn(self, player): #funkcja pokazuje co się dzieje w trakcie tury gracza człowieka
         """
