@@ -22,7 +22,7 @@ class Player:
         """
         self.cardsInHand.append(card) #dodaje do ręki kartę podaną jako zmienną (będzie to rand z talii)
 
-    def play_card(self, card):
+    def play_card(self, idcard):
         """
         Klasa obsługuje wszystkie zmiany, które zachodzą po zagraniu karty.
         1. Usuwa daną kartę z ręki
@@ -32,7 +32,8 @@ class Player:
         :param card: object card
         :return:
         """
-        self.cardsInHand.remove(card) #usuwa z ręki wybraną kartę
+        card = self.cardsInHand[idcard]
+        del self.cardsInHand[idcard] #usuwa z ręki wybraną kartę
         self.cardsPlayed.append(card) #dodaje ją do listy zagranych kart
         self.LastCard = card #ustala ją jako ostatnią zagrana kartę
         self.points += card.value #dodaje punkty za kartę

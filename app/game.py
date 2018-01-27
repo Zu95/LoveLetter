@@ -9,6 +9,7 @@ class Game:
     """
     def __init__(self, name='gra', mode=1, p1='', p2='Darth Vader', p3='Palpatine', p4='Jabba the Hutt'):
         self.name = name
+        self.turn = 0
         #muszę stworzyć obiekty poszczególnych kart
         self.card1a = cards.One()
         self.card1b = cards.One()
