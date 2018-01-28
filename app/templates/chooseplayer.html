@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+
+{% block content %}
+    Wybierz gracza (dla kart)
+    <ul>
+    {% for player in activeplayers %}
+    <li><a href="{{ url_for(url_for('cardseffect', id=id, chosenplayerid=player.id)) }}">{{ player.name }}</a></li>
+    {% endfor %}
+    </ul>
+{% endblock %}

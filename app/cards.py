@@ -145,7 +145,7 @@ class Seven:
         self.name = 'Bobba Fett'
         self.description = 'Bobba Fett jest super, ale boi się dziwnych stworzeń. Musisz go odrzucić, jeżeli masz w ręce Yodę albo Wookiego.'
 
-    def effect(self):
+    def effect(self, player):
         """
         Funkcja nic nie robi, zwraca że ok
         :return: 1

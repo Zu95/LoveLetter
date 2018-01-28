@@ -34,25 +34,25 @@ class Game:
                      self.card2a, self.card2b,
                      self.card1a, self.card1b, self.card1c, self.card1d, self.card1e] #inicuję talię
         if(mode == 1): # jeden gracz vs 3 komputery, opcja domyślna
-            self.player1 = player.Player(p1)
-            self.player2 = player.Computer(p2, race='computer') #komputer
-            self.player3 = player.Computer(p3, race='computer') #komputer
-            self.player4 = player.Computer(p4, race='computer') #komputer
+            self.player1 = player.Player(name=p1, id=0)
+            self.player2 = player.Computer(name=p2, race='computer', id=1) #komputer
+            self.player3 = player.Computer(name=p3, race='computer', id=2) #komputer
+            self.player4 = player.Computer(name=p4, race='computer', id=3) #komputer
         elif(mode == 2): #dwóch graczy vs 2 komputery
-            self.player1 = player.Player(p1)
-            self.player2 = player.Player(p2)
-            self.player3 = player.Computer(p3, race='computer') #komputer
-            self.player4 = player.Computer(p4, race='computer') #komputer
+            self.player1 = player.Player(name=p1, id=0)
+            self.player2 = player.Player(name=p2, id=1)
+            self.player3 = player.Computer(name=p3, race='computer', id=2) #komputer
+            self.player4 = player.Computer(name=p4, race='computer', id=3) #komputer
         elif(mode == 3): #trzech graczy vs 1 komputer
-            self.player1 = player.Player(p1)
-            self.player2 = player.Player(p2)
-            self.player3 = player.Player(p3)
-            self.player4 = player.Computer(p4, race='computer') #komputer
+            self.player1 = player.Player(name=p1, id=0)
+            self.player2 = player.Player(name=p2, id=1)
+            self.player3 = player.Player(name=p3, id=2)
+            self.player4 = player.Computer(name=p4, race='computer', id=3) #komputer
         elif (mode == 4): #czterech graczy
-            self.player1 = player.Player(p1)
-            self.player2 = player.Player(p2)
-            self.player3 = player.Player(p3)
-            self.player4 = player.Player(p4)
+            self.player1 = player.Player(name=p1, id=0)
+            self.player2 = player.Player(name=p2, id=1)
+            self.player3 = player.Player(name=p3, id=2)
+            self.player4 = player.Player(name=p4, id=3)
 
         self.players = [self.player1, self.player2, self.player3, self.player4] #tworzę listę 4 graczy
         self.currentInfo = 'Witamy w grze'

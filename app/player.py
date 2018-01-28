@@ -3,7 +3,7 @@ class Player:
     """
     Klasa obsługuje gracza
     """
-    def __init__(self, name='', race='human'):
+    def __init__(self, name='', race='human', id=0):
         self.name = name
         self.active = True
         self.protected = False
@@ -13,6 +13,7 @@ class Player:
         self.points = 0
         self.race = race
         self.privateInfo = ''
+        self.id = id
 
     def add_card(self, card):
         """

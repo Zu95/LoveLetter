@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+
+{% block content %}
+    Wybierz gracza (dla 1)
+    <ul>
+    {% for player in activeplayers %}
+    <li><a href="{{ url_for(url_for('choosecardfor1', id=1, chosenplayerid=player.id)) }}">{{ player.name }}</a></li>
+    {% endfor %}
+    </ul>
+{% endblock %}
