@@ -17,7 +17,7 @@ class One:
         :param card: string
         :return: 1 jeśli zgadł, 0 jeśli nie
         """
-        if (chosen_player.cardsInHand[0].name == card):
+        if (chosen_player.cardsInHand[0].value == card):
             chosen_player.active = False
             chosen_player.privateInfo = 'Gracz' + player.name + 'zgadł Twoją kartę, odpadasz z rundy' #gracz dowiaduje się, że przegrał
             chosen_player.cardsPlayed.append(chosen_player.cardsInHand[0]) #jego karta w ręce jest wykładana na stół
@@ -169,5 +169,8 @@ class Eight:
         :return: 1
         """
         player.active = False
+        card = player.cardsInHand[0]
+        del player.cardsInHand[0]  # usuwa z ręki wybraną kartę
+        player.cardsPlayed.append(card)  # dodaje ją do listy wyrzuconych kart, bez rozpatrzenia
         return 1
 

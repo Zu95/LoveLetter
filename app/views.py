@@ -19,13 +19,34 @@ def newgame():
     return redirect(url_for('game'))
 
 
-@app.route('/state')
+@app.route('/game')
 def game():
+    """
+    Funkcja renderuje aktualny widok gry po każdym ruchu i po każdej zmianie.
+    Sprawdza czy gra się nie zakończyła.
+    Sprawdza, czy ktoś nie wygrał.
+    Daje graczowi, którego jest kolej kartę do ręki.
+    Zmienia komunikat.
+
+    :return:
+    """
     game = pickle.load(open('game.pkl', 'rb'))
     currentplayer = game.turn % 4
-    card = game.choose()
-    game.players[currentplayer].add_card(card)
-    game.deck.remove(card)
+    if (game.players[currentplayer].active == False):
+        game.turn += 1
+        pickle.dump(game, open('game.pkl', 'wb'))
+        return redirect(url_for('game'))
+    game.currentInfo = 'Ruch gracza ' + game.players[currentplayer].name
+    if (game.cards_in_deck()>0): #jeżeli jest jeszcze chociaż jedna karta do dobrania to gramy dalej
+        card = game.choose()
+        game.players[currentplayer].add_card(card)
+        game.deck.remove(card)
+    else: #jeżeli skończyły się karty to znaczy że koniec gry
+        game.gameon = False
+        game.currentInfo = 'Koniec gry'
+        pickle.dump(game, open('game.pkl', 'wb'))
+        return redirect(url_for('isgameon'))
+    game.players[currentplayer].protected = False #już go nie chroni karta 4
     renderplayer = []
     for a in game.players:
         thisplayer = {'username': a.name, 'points': a.points, 'info': a.privateInfo}
@@ -44,8 +65,6 @@ def game():
         renderplayer.append(thisplayer)
 
     cards_remaining = game.cards_in_deck()
-
-    game.currentInfo = 'Ruch gracza '+game.players[currentplayer].name
     pickle.dump(game, open('game.pkl', 'wb'))
     return render_template('index.html', player_me=renderplayer[currentplayer], player_1=renderplayer[(currentplayer+1)%4],
                            player_2=renderplayer[(currentplayer+2)%4], player_3=renderplayer[(currentplayer+3)%4], cards_remaining=cards_remaining, info=game.currentInfo)
@@ -55,10 +74,111 @@ def playcard(id):
     game = pickle.load(open('game.pkl', 'rb'))
     playerid = game.turn%4 #który gracz się ruszył
     a = int(id)
-    card = game.players[playerid].cardsInHand[a]
-    del game.players[playerid].cardsInHand[a]
-    game.players[playerid].cardsPlayed.append(card)
-    game.turn+=1
+    card_played = game.players[playerid].cardsInHand[a]
+    game.players[playerid].play_card(a)
+    if (card_played.value==(1 or 2 or 3 or 5 or 6)):
+        pass
+        #zażądaj wybrania gracza
+    elif (bool(card_played.value ==4) or bool(card_played.value == 7) or bool(card_played.value==8)): #jeżeli karta działa tylko na jednego gracza
+        card_played.effect(player=game.players[playerid])
+    game.turn += 1
     pickle.dump(game, open('game.pkl', 'wb'))
-    return redirect(url_for('game'))
+    return redirect(url_for('isgameon'))
 
+@app.route('/isgameon')
+def isgameon():
+    """
+    Funkcja sprawdza, czy gra trwa dalej
+    :return:
+    """
+    game = pickle.load(open('game.pkl', 'rb'))
+    if (game.gameon == False): #jeżeli zostaliśmy tu przekierowani z jakiegoś zakończenia gry
+        activeplayers = []
+        for player in game.players: #zliczamy aktywnych graczy
+            if (player.active == True):
+                activeplayers.append(player)
+            else:
+                pass
+        #sprawdzenie, który gracz wygrał
+        game.winner = activeplayers[0]
+        for player in activeplayers: #wybieramy zwycięzcę z aktywnych graczy, po kartach, które mają w ręce
+            if player.cardsInHand[0].value > game.winner.cardsInHand[0].value:
+                game.winner = player
+        pickle.dump(game, open('game.pkl', 'wb'))
+        return render_template('winner.html', winner=game.winner.name) #przekierowanie do widoku zwycięstwa
+    else:
+        #sprawdzenie, ilu graczy pozostało w grze
+        activeplayers = []
+        for player in game.players:
+            if (player.active == True):
+                activeplayers.append(player)
+
+        if (len(activeplayers)==1):
+            game.gameon = False
+            game.winner = activeplayers[0]
+            pickle.dump(game, open('game.pkl', 'wb'))
+            return render_template('winner.html', winner=game.winner.name)  # widok zwycięstwa
+        else:
+            pickle.dump(game, open('game.pkl', 'wb'))
+            return redirect(url_for('game')) #przekierowuje do gry
+
+@app.route('/<currentplayerid>/<cardvalue>/chooseplayer')
+def chooseplayer(currentplayerid, cardvalue):
+    game = pickle.load(open('game.pkl', 'rb'))
+    activeplayers = []
+    for player in game.players:  # zliczamy aktywnych graczy, spośród których można wybierać
+        if (player.active == True):
+            activeplayers.append(player)
+        else:
+            pass
+    if (cardvalue==1):
+        #ten widok przekieruje nas do wytypowania karty
+        return render_template('chooseplayerfor1.html')
+    else:
+        #widok przekieruje nas od razu do akcji danej karty
+        return render_template('chooseplayer.html')
+
+@app.route('/<currentplayerid>/<cardvalue>/chooseplayer/<chosenplayerid>')
+def cardseffect(currentplayerid, cardvalue, chosenplayerid):
+    """
+    Wykonuję akcję dla kart 2, 3, 5, 6 po wybraniu przeciwnika
+    :param currentplayerid:
+    :param cardvalue:
+    :param chosenplayerid:
+    :return:
+    """
+    game = pickle.load(open('game.pkl', 'rb'))
+
+    pass
+
+
+@app.route('/<currentplayerid>/1/chooseplayer/<chosenplayerid>/choosecard')
+def choosecardfor1(currentplayerid, chosenplayerid):
+    return render_template('choosecard.html', current_player=currentplayerid, chosen_player=chosenplayerid)
+
+
+@app.route('/<currentplayerid>/1/chooseplayer/<chosenplayerid>/<chosencardvalue>')
+def card1effect(currentplayerid, chosenplayerid, chosencardvalue):
+    """
+    Wykonuję akcję dla karty 1 po wybraniu przeciwnika i wytypowaniu karty
+    :param currentplayerid:
+    :param chosenplayerid:
+    :param chosencardid:
+    :return:
+    """
+    game = pickle.load(open('game.pkl', 'rb'))
+    choose_player = game.players[chosenplayerid]
+    choose_card = chosencardvalue
+    player = game.players[currentplayerid]
+    card_played = game.players[currentplayerid].lastCard
+    if (choose_player.protected == False):
+        game.currentInfo = 'Gracz myśli, że ' + choose_player.name + ' ma kartę ' + choose_card
+        if ((card_played.effect(player=player, chosen_player=choose_player, card=choose_card)) == 1):
+            game.currentInfo += ' I ma rację, ' + choose_player.name + ' odpada'
+        elif ((card_played.effect(player=player, chosen_player=choose_player, card=choose_card)) == 0):
+            game.currentInfo += ' I nie ma racji, nic się nie dzieje'
+    else:
+        game.currentInfo = 'Gracz ' + choose_player.name + ' jest chroniony'
+    game.turn += 1
+    pickle.dump(game, open('game.pkl', 'wb'))
+    return redirect(url_for('game'))  # przekierowuje do gry

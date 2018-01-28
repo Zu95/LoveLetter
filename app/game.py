@@ -57,6 +57,7 @@ class Game:
         self.players = [self.player1, self.player2, self.player3, self.player4] #tworzę listę 4 graczy
         self.currentInfo = 'Witamy w grze'
         self.gameon = True
+        self.winner = 0
 
     def cards_in_deck(self):
         """
