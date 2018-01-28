@@ -29,7 +29,7 @@ class Player:
         2. Dodaje ją do listy zagranych kart
         3. Ustala ją jako ostatnio zagraną kartę
         4. Dodaje graczowi punkty za tą kartę
-        :param card: object card
+        :param idcard: int cardinhand position
         :return:
         """
         card = self.cardsInHand[idcard]

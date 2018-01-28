@@ -23,7 +23,9 @@ def newgame():
 def game():
     game = pickle.load(open('game.pkl', 'rb'))
     currentplayer = game.turn % 4
-    game.players[currentplayer].add_card(game.choose())
+    card = game.choose()
+    game.players[currentplayer].add_card(card)
+    game.deck.remove(card)
     renderplayer = []
     for a in game.players:
         thisplayer = {'username': a.name, 'points': a.points, 'info': a.privateInfo}
@@ -44,6 +46,7 @@ def game():
     cards_remaining = game.cards_in_deck()
 
     game.currentInfo = 'Ruch gracza '+game.players[currentplayer].name
+    pickle.dump(game, open('game.pkl', 'wb'))
     return render_template('index.html', player_me=renderplayer[currentplayer], player_1=renderplayer[(currentplayer+1)%4],
                            player_2=renderplayer[(currentplayer+2)%4], player_3=renderplayer[(currentplayer+3)%4], cards_remaining=cards_remaining, info=game.currentInfo)
 
@@ -52,8 +55,10 @@ def playcard(id):
     game = pickle.load(open('game.pkl', 'rb'))
     playerid = game.turn%4 #który gracz się ruszył
     a = int(id)
-
-    game.players[playerid].play_card(a)
+    card = game.players[playerid].cardsInHand[a]
+    del game.players[playerid].cardsInHand[a]
+    game.players[playerid].cardsPlayed.append(card)
+    game.turn+=1
     pickle.dump(game, open('game.pkl', 'wb'))
     return redirect(url_for('game'))
 
