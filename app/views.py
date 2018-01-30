@@ -36,7 +36,7 @@ def game():
         game.turn += 1
         pickle.dump(game, open('game.pkl', 'wb'))
         return redirect(url_for('game'))
-    game.currentInfo = 'Ruch gracza ' + game.players[currentplayer].name
+    game.currentTurn = 'Ruch gracza ' + game.players[currentplayer].name
     if (game.cards_in_deck()>0): #jeżeli jest jeszcze chociaż jedna karta do dobrania to gramy dalej
         card = game.choose()
         game.players[currentplayer].add_card(card)
@@ -67,25 +67,8 @@ def game():
     cards_remaining = game.cards_in_deck()
     pickle.dump(game, open('game.pkl', 'wb'))
     return render_template('index.html', player_me=renderplayer[currentplayer], player_1=renderplayer[(currentplayer+1)%4],
-                           player_2=renderplayer[(currentplayer+2)%4], player_3=renderplayer[(currentplayer+3)%4], cards_remaining=cards_remaining, info=game.currentInfo)
+                           player_2=renderplayer[(currentplayer+2)%4], player_3=renderplayer[(currentplayer+3)%4], cards_remaining=cards_remaining, info=game.currentInfo, turn=game.currentTurn)
 
-@app.route('/play/<id>', methods=['GET', 'POST'])
-def playcard(id):
-    game = pickle.load(open('game.pkl', 'rb'))
-    playerid = game.turn%4 #który gracz się ruszył
-    a = int(id)
-    card_played = game.players[playerid].cardsInHand[a]
-    game.players[playerid].play_card(a)
-    if (bool(card_played.value==1)):
-        return redirect(url_for('chooseplayer', id=id))
-        #zażądaj wybrania gracza
-    elif (bool(card_played.value ==2) or bool(card_played.value == 3) or bool(card_played.value==5) or bool(card_played.value==6)):
-        return redirect(url_for('chooseplayer', id=id)) #zażądaj wybrania gracza
-    elif (bool(card_played.value ==4) or bool(card_played.value == 7) or bool(card_played.value==8)): #jeżeli karta działa tylko na jednego gracza
-        card_played.effect(player=game.players[playerid])
-    game.turn += 1
-    pickle.dump(game, open('game.pkl', 'wb'))
-    return redirect(url_for('isgameon'))
 
 @app.route('/isgameon')
 def isgameon():
@@ -124,25 +107,48 @@ def isgameon():
             pickle.dump(game, open('game.pkl', 'wb'))
             return redirect(url_for('game')) #przekierowuje do gry
 
+
+@app.route('/play/<id>', methods=['GET', 'POST'])
+def playcard(id):
+    game = pickle.load(open('game.pkl', 'rb'))
+    currentplayer = game.turn % 4
+    a = int(id)
+    card_played = game.players[currentplayer].cardsInHand[a]
+    if (game.players[currentplayer].play_card(card=card_played)==True):
+
+        if (bool(card_played.value==1) or bool(card_played.value ==2) or bool(card_played.value == 3) or bool(card_played.value==5) or bool(card_played.value==6)):
+            pickle.dump(game, open('game.pkl', 'wb'))
+            return redirect(url_for('chooseplayer', id=id)) #zażądaj wybrania gracza
+        elif (bool(card_played.value ==4) or bool(card_played.value == 7) or bool(card_played.value==8)): #jeżeli karta działa tylko na jednego gracza
+            card_played.effect(player=game.players[currentplayer], game=game)
+        game.turn += 1
+        pickle.dump(game, open('game.pkl', 'wb'))
+        return redirect(url_for('isgameon'))
+    else:
+        return render_template('start.html')
+
+
 @app.route('/play/<id>/chooseplayer')
 def chooseplayer(id):
     game = pickle.load(open('game.pkl', 'rb'))
     currentplayerid = game.turn % 4  # który gracz się ruszył
+    playedcardvalue = game.players[currentplayerid].lastCard.value
     activeplayers = []
     for player in game.players:  # zliczamy aktywnych graczy, spośród których można wybierać
         if (player.active == True):
             activeplayers.append(player) #lista activeplayers
         else:
             pass
-    if (id==1):
+    if (playedcardvalue==1):
         #ten widok przekieruje nas do wytypowania karty
         return render_template('chooseplayerfor1.html', activeplayers=activeplayers, id=id)
     else:
         #widok przekieruje nas od razu do akcji danej karty
         return render_template('chooseplayer.html', activeplayers=activeplayers, id=id)
 
+
 @app.route('/play/<id>/chooseplayer/<chosenplayerid>')
-def cardseffect(currentplayerid, chosenplayerid, cardvalue=id):
+def cardseffect(id, chosenplayerid):
     """
     Wykonuję akcję dla kart 2, 3, 5, 6 po wybraniu przeciwnika
     :param currentplayerid:
@@ -152,19 +158,20 @@ def cardseffect(currentplayerid, chosenplayerid, cardvalue=id):
     """
     game = pickle.load(open('game.pkl', 'rb'))
     currentplayerid = game.turn % 4  # który gracz się ruszył
-
-    return redirect(url_for('game'))  # przekierowuje do gry
+    game.turn+=1
+    pickle.dump(game, open('game.pkl', 'wb'))
+    return redirect(url_for('isgameon'))  # przekierowuje do gry
 
 
 @app.route('/play/<id>/chooseplayer/<chosenplayerid>/choosecard')
-def choosecardfor1(id, chosenplayerid):
+def choosecard(id, chosenplayerid):
     game = pickle.load(open('game.pkl', 'rb'))
     currentplayerid = game.turn % 4  # który gracz się ruszył
     return render_template('choosecard.html', current_player=currentplayerid, chosen_player=chosenplayerid, id=id)
 
 
-@app.route('/play/1/chooseplayer/<chosenplayerid>/choosecard/<chosencardvalue>')
-def card1effect(currentplayerid, chosenplayerid, chosencardvalue):
+@app.route('/play/<id>/chooseplayer/<chosenplayerid>/choosecard/<chosencardvalue>')
+def card1effect(id, chosenplayerid, chosencardvalue):
     """
     Wykonuję akcję dla karty 1 po wybraniu przeciwnika i wytypowaniu karty
     :param currentplayerid:
@@ -172,20 +179,21 @@ def card1effect(currentplayerid, chosenplayerid, chosencardvalue):
     :param chosencardid:
     :return:
     """
+    chosen_player = int(chosenplayerid)
     game = pickle.load(open('game.pkl', 'rb'))
     currentplayerid = game.turn % 4  # który gracz się ruszył
-    choose_player = game.players[chosenplayerid]
-    choose_card = chosencardvalue
+    choose_player = game.players[chosen_player]
+    choose_card = int(chosencardvalue)
     player = game.players[currentplayerid]
     card_played = game.players[currentplayerid].lastCard
     if (choose_player.protected == False):
-        game.currentInfo = 'Gracz myśli, że ' + choose_player.name + ' ma kartę ' + choose_card
+        game.currentInfo += 'Gracz '+ player.name+' myśli, że ' + choose_player.name + ' ma kartę ' + str(choose_card)
         if ((card_played.effect(player=player, chosen_player=choose_player, card=choose_card)) == 1):
-            game.currentInfo += ' I ma rację, ' + choose_player.name + ' odpada'
+            game.currentInfo += ' i ma rację, ' + choose_player.name + ' odpada '
         elif ((card_played.effect(player=player, chosen_player=choose_player, card=choose_card)) == 0):
-            game.currentInfo += ' I nie ma racji, nic się nie dzieje'
+            game.currentInfo += ' i nie ma racji, nic się nie dzieje '
     else:
-        game.currentInfo = 'Gracz ' + choose_player.name + ' jest chroniony'
+        game.currentInfo += 'Gracz ' + choose_player.name + ' jest chroniony'
     game.turn += 1
     pickle.dump(game, open('game.pkl', 'wb'))
-    return redirect(url_for('game'))  # przekierowuje do gry
+    return redirect(url_for('isgameon'))  # przekierowuje do gry

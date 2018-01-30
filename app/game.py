@@ -10,6 +10,7 @@ class Game:
     def __init__(self, name='gra', mode=1, p1='', p2='Darth Vader', p3='Palpatine', p4='Jabba the Hutt'):
         self.name = name
         self.turn = 0
+        self.currentTurn = ''
         #muszę stworzyć obiekty poszczególnych kart
         self.card1a = cards.One()
         self.card1b = cards.One()
@@ -55,7 +56,7 @@ class Game:
             self.player4 = player.Player(name=p4, id=3)
 
         self.players = [self.player1, self.player2, self.player3, self.player4] #tworzę listę 4 graczy
-        self.currentInfo = 'Witamy w grze'
+        self.currentInfo = 'Witamy w grze<br>'
         self.gameon = True
         self.winner = 0
 

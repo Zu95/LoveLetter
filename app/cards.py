@@ -80,13 +80,14 @@ class Four:
         self.name = 'Sokół Millenium'
         self.description = 'Sokół Millenium wchodzi w nadświetlną! Nikt nie może Ci nic zrobić do następnej Twojej kolejki.'
 
-    def effect(self, player): #ustala dla danego gracza ochronę
+    def effect(self, player, game): #ustala dla danego gracza ochronę
         """
         Funkcja ustala ochronę dla danego gracza na czas rundy
         :param player:
         :return: 1
         """
         player.protected = True
+        game.currentInfo += player.name+' jest chroniony do następnej swojej tury'
         return 1
 
 
@@ -145,11 +146,12 @@ class Seven:
         self.name = 'Bobba Fett'
         self.description = 'Bobba Fett jest super, ale boi się dziwnych stworzeń. Musisz go odrzucić, jeżeli masz w ręce Yodę albo Wookiego.'
 
-    def effect(self, player):
+    def effect(self, player, game):
         """
         Funkcja nic nie robi, zwraca że ok
         :return: 1
         """
+
         return 1
 
 
@@ -162,7 +164,7 @@ class Eight:
         self.name = 'Pokój w galaktyce'
         self.description = 'Musisz utrzymać pokój w galaktyce, żeby zakon Jedi nie zginął. Jeżeli odrzucisz tą kartę - przegrasz.'
 
-    def effect(self, player):
+    def effect(self, player, game):
         """
         Funkcja zabija gracza, który ją zagrał
         :param player: object player
@@ -172,5 +174,6 @@ class Eight:
         card = player.cardsInHand[0]
         del player.cardsInHand[0]  # usuwa z ręki wybraną kartę
         player.cardsPlayed.append(card)  # dodaje ją do listy wyrzuconych kart, bez rozpatrzenia
+        game.currentInfo += player.name+' odpada z rundy, bo nie utrzymał pokoju w galaktyce'
         return 1
 

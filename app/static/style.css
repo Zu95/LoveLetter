@@ -27,3 +27,11 @@
 .tg .tg-yw4l{
 	vertical-align:top
 }
+.board{
+	width: 70%;
+	float: left;
+}
+.log{
+	width: 25%;
+	float: left;
+}
