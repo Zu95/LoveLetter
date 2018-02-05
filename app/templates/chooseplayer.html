@@ -1,7 +1,12 @@
-{% extends "base.html" %}
+{% extends "index.html" %}
+{% block shadow %}
+    <div class="zaslonka">
 
-{% block content %}
-    Wybierz gracza (dla kart)
+    </div>
+{% endblock %}
+{% block action %}
+
+    Wybierz gracza:
     <ul>
     {% for player in activeplayers %}
         <li>
@@ -10,4 +15,6 @@
 
     {% endfor %}
     </ul>
+
 {% endblock %}
+

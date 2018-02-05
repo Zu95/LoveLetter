@@ -3,6 +3,8 @@
 {% block content %}
     <div class="row">
     <div class="col-sm-6">
+    {% block shadow %}
+        {% endblock %}
         <table class="tg">
           <tr>
             <th class="tg-yw4l">{{ player_1.username }}</th>
@@ -18,16 +20,16 @@
             <td class="tg-yw4l">Punkty: {{ player_1.points }}</td>
             <td class="tg-yw4l"></td>
             <td class="tg-yw4l"></td>
-            <td class="tg-yw4l"><img src="../static/img/karta_{{ player_2.cardplayed1 }}.jpg" title="{{ player2_cardplayed1info }}"></td>
-            <td class="tg-yw4l"><img src="../static/img/karta_{{ player_2.cardplayed2 }}.jpg" title="{{ player2_cardplayed2info }}"></td>
-            <td class="tg-yw4l"><img src="../static/img/karta_{{ player_2.cardplayed3 }}.jpg" title="{{ player2_cardplayed3info }}"></td>
-            <td class="tg-yw4l"><img src="../static/img/karta_{{ player_2.cardplayed4 }}.jpg" title="{{ player2_cardplayed4info }}"></td>
+            <td class="tg-yw4l"><img src="/../static/img/karta_{{ player_2.cardplayed1 }}.jpg" title="{{ player2_cardplayed1info }}"></td>
+            <td class="tg-yw4l"><img src="/../static/img/karta_{{ player_2.cardplayed2 }}.jpg" title="{{ player2_cardplayed2info }}"></td>
+            <td class="tg-yw4l"><img src="/../static/img/karta_{{ player_2.cardplayed3 }}.jpg" title="{{ player2_cardplayed3info }}"></td>
+            <td class="tg-yw4l"><img src="/../static/img/karta_{{ player_2.cardplayed4 }}.jpg" title="{{ player2_cardplayed4info }}"></td>
             <td class="tg-yw4l"></td>
             <td class="tg-yw4l"></td>
             <td class="tg-yw4l">Punkty: {{ player_3.points }}</td>
           </tr>
           <tr>
-            <td class="tg-yw4l"><img src="../static/img/karta_poziomo_{{ player_1.cardplayed1 }}.jpg" title="{{ player1_cardplayed1info }}"></td>
+            <td class="tg-yw4l"><img src="/../static/img/karta_poziomo_{{ player_1.cardplayed1 }}.jpg" title="{{ player1_cardplayed1info }}"></td>
             <td class="tg-yw4l"></td>
             <td class="tg-yw4l"></td>
             <td class="tg-yw4l"></td>
@@ -36,34 +38,34 @@
             <td class="tg-yw4l"></td>
             <td class="tg-yw4l"></td>
             <td class="tg-yw4l"></td>
-            <td class="tg-yw4l"><img src="../static/img/karta_poziomo_b_{{ player_3.cardplayed1 }}.jpg" title="{{ player3_cardplayed1info }}"></td>
+            <td class="tg-yw4l"><img src="/../static/img/karta_poziomo_b_{{ player_3.cardplayed1 }}.jpg" title="{{ player3_cardplayed1info }}"></td>
           </tr>
           <tr>
-            <td class="tg-yw4l"><img src="../static/img/karta_poziomo_{{ player_1.cardplayed2 }}.jpg" alt=""></td>
+            <td class="tg-yw4l"><img src="/../static/img/karta_poziomo_{{ player_1.cardplayed2 }}.jpg" alt=""></td>
             <td class="tg-yw4l"></td>
             <td class="tg-yw4l"></td>
             <td class="tg-yw4l" rowspan="2">
                 {% if cards_remaining>0 %}
-                    <img src="../static/img/talia.jpg" title="Zostało {{ cards_remaining }} kart do dobrania">
+                    <img src="/../static/img/talia.jpg" title="Zostało {{ cards_remaining }} kart do dobrania">
                 {% else %}
-                    <img src="../static/img/karta_0.jpg" alt="">
+                    <img src="/../static/img/karta_0.jpg" alt="">
                 {% endif %}
             </td>
             <td class="tg-yw4l" colspan="3" rowspan="2">{{ turn }}</td>
             <td class="tg-yw4l"></td>
             <td class="tg-yw4l"></td>
-            <td class="tg-yw4l"><img src="../static/img/karta_poziomo_b_{{ player_3.cardplayed2 }}.jpg" alt=""></td>
+            <td class="tg-yw4l"><img src="/../static/img/karta_poziomo_b_{{ player_3.cardplayed2 }}.jpg" alt=""></td>
           </tr>
           <tr>
-            <td class="tg-yw4l"><img src="../static/img/karta_poziomo_{{ player_1.cardplayed3 }}.jpg" alt=""></td>
+            <td class="tg-yw4l"><img src="/../static/img/karta_poziomo_{{ player_1.cardplayed3 }}.jpg" alt=""></td>
             <td class="tg-yw4l"></td>
             <td class="tg-yw4l"></td>
             <td class="tg-yw4l"></td>
             <td class="tg-yw4l"></td>
-            <td class="tg-yw4l"><img src="../static/img/karta_poziomo_b_{{ player_3.cardplayed3 }}.jpg" alt=""></td>
+            <td class="tg-yw4l"><img src="/../static/img/karta_poziomo_b_{{ player_3.cardplayed3 }}.jpg" alt=""></td>
           </tr>
           <tr>
-            <td class="tg-yw4l"><img src="../static/img/karta_poziomo_{{ player_1.cardplayed4 }}.jpg" alt=""></td>
+            <td class="tg-yw4l"><img src="/../static/img/karta_poziomo_{{ player_1.cardplayed4 }}.jpg" alt=""></td>
             <td class="tg-yw4l"></td>
             <td class="tg-yw4l"></td>
             <td class="tg-yw4l"></td>
@@ -72,16 +74,16 @@
             <td class="tg-yw4l"></td>
             <td class="tg-yw4l"></td>
             <td class="tg-yw4l"></td>
-            <td class="tg-yw4l"><img src="../static/img/karta_poziomo_b_{{ player_3.cardplayed4 }}.jpg" alt=""></td>
+            <td class="tg-yw4l"><img src="/../static/img/karta_poziomo_b_{{ player_3.cardplayed4 }}.jpg" alt=""></td>
           </tr>
           <tr>
             <td class="tg-yw4l"></td>
             <td class="tg-yw4l"></td>
             <td class="tg-yw4l"></td>
-            <td class="tg-yw4l"><img src="../static/img/karta_{{ player_me.cardplayed1 }}.jpg" title="{{ player_me.cardplayed1info }}"></td>
-            <td class="tg-yw4l"><img src="../static/img/karta_{{ player_me.cardplayed2 }}.jpg" title="{{ player_me.cardplayed2info }}"></td>
-            <td class="tg-yw4l"><img src="../static/img/karta_{{ player_me.cardplayed3 }}.jpg" title="{{ player_me.cardplayed3info }}"></td>
-            <td class="tg-yw4l"><img src="../static/img/karta_{{ player_me.cardplayed4 }}.jpg" title="{{ player_me.cardplayed4info }}"></td>
+            <td class="tg-yw4l"><img src="/../static/img/karta_{{ player_me.cardplayed1 }}.jpg" title="{{ player_me.cardplayed1info }}"></td>
+            <td class="tg-yw4l"><img src="/../static/img/karta_{{ player_me.cardplayed2 }}.jpg" title="{{ player_me.cardplayed2info }}"></td>
+            <td class="tg-yw4l"><img src="/../static/img/karta_{{ player_me.cardplayed3 }}.jpg" title="{{ player_me.cardplayed3info }}"></td>
+            <td class="tg-yw4l"><img src="/../static/img/karta_{{ player_me.cardplayed4 }}.jpg" title="{{ player_me.cardplayed4info }}"></td>
             <td class="tg-yw4l" colspan="3" rowspan="2">{{ player_me.info }}</td>
           </tr>
           <tr>
@@ -89,15 +91,19 @@
             <td class="tg-yw4l" colspan="2">{{ player_me.username }}
             <br>Punkty: {{ player_me.points }}</td>
             <td class="tg-yw4l"></td>
-            <td class="tg-yw4l"><a href="/play/0"><img src="../static/img/karta_{{ player_me.cardinhand1 }}.jpg" title="{{ player_me.cardinhand1info }}"></a></td>
-              <td class="tg-yw4l"><a href="/play/1"><img src="../static/img/karta_{{ player_me.cardinhand2 }}.jpg" title="{{ player_me.cardinhand2info }}"></a></td>
+            <td class="tg-yw4l"><a href="/play/0"><img src="/../static/img/karta_{{ player_me.cardinhand1 }}.jpg" title="{{ player_me.cardinhand1info }}"></a></td>
+              <td class="tg-yw4l"><a href="/play/1"><img src="/../static/img/karta_{{ player_me.cardinhand2 }}.jpg" title="{{ player_me.cardinhand2info }}"></a></td>
             <td class="tg-yw4l"></td>
           </tr>
         </table>
     </div>
-        <div class="col-sm-4">
+        <div class="col-sm-6">
+        {% block action %}
+            {% endblock %}
             <h3>Log gry:</h3>
-                <p>{{ info }}</p>
+                {% for inf in info %}
+                <br>{{ inf }}
+                {% endfor %}
             </div>
     </div>
 {% endblock %}

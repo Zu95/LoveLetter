@@ -1,3 +1,13 @@
+.zaslonka{
+	width: 70%;
+	height: 100%;
+	background-color: rgba(255, 255, 255, 0.5);
+	position: fixed;
+}
+.winner{
+	background-color: #fff;
+	position: fixed;
+}
 .tg  {
 	border-collapse:collapse;
 	border-spacing:0;
@@ -27,11 +37,5 @@
 .tg .tg-yw4l{
 	vertical-align:top
 }
-.board{
-	width: 70%;
-	float: left;
-}
-.log{
-	width: 25%;
-	float: left;
-}
+
+

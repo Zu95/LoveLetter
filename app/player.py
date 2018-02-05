@@ -38,6 +38,7 @@ class Player:
         self.cardsInHand.remove(card) #usuwa z ręki wybraną kartę
         self.lastCard = card #ustala ją jako ostatnią zagrana kartę
         self.points += card.value #dodaje punkty za kartę
+        self.privateInfo = ''
 
         return True
 

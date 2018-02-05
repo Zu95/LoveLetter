@@ -1,5 +1,17 @@
-{% extends "base.html" %}
+{% extends "index.html" %}
 
-{% block content %}
-Wygrywa {{ winner }}!!
+{% block shadow %}
+<div class="zaslonka">
+<div class="winner">
+<h4>Karty w rękach graczy, którzy nie odpadli</h4>
+    {% for player in activeplayers %}
+        <br><img src="/../static/img/karta_{{ player.cardsInHand[0].value }}.jpg" alt=""> - {{ player.name }}
+    {% endfor %}
+<p>
+    <h4>Zwycięzca</h4>
+Wygrywa {{ winner }} bo ma w ręce kartę: <img src="/../static/img/karta_{{ winnercard }}.jpg" alt="">
+    {{ winnerinfo }}
+</p>
+</div>
+</div>
 {% endblock %}

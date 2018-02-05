@@ -19,12 +19,9 @@ class One:
         """
         if (chosen_player.cardsInHand[0].value == card):
             chosen_player.active = False
-            chosen_player.privateInfo = 'Gracz' + player.name + 'zgadł Twoją kartę, odpadasz z rundy' #gracz dowiaduje się, że przegrał
             chosen_player.cardsPlayed.append(chosen_player.cardsInHand[0]) #jego karta w ręce jest wykładana na stół
-            player.privateInfo = 'Miałeś rację'
             return 1
         else:
-            player.privateInfo = 'Nie miałeś racji'
             return 0
 
 
@@ -39,7 +36,7 @@ class Two:
         self.description = 'R2D2 wykradnie dla Ciebie informacje o karcie w ręce wybranego gracza.'
 
     def effect(self, player, chosen_player): #gracz pierwszy dostaje informację o karcie w ręce gracza drugiego
-        player.privateInfo = 'Karta w ręce wybranego gracza to '+chosen_player.cardsInHand[0].name
+        player.privateInfo += 'Karta w ręce gracza '+ chosen_player.name +' to '+chosen_player.cardsInHand[0].name
         return 1
 
 
@@ -61,11 +58,17 @@ class Three:
         :param chosen_player: object player
         :return: 1 jeśli wygra gracz, którego to jest runda, 2 jeśli przeciwnik, 0 jeżeli żaden
         """
-        if player.cardsInHand(0) > chosen_player.cardsInHand(0):
+        if (player.cardsInHand[0].value > chosen_player.cardsInHand[0].value):
             chosen_player.active = False
+            card = chosen_player.cardsInHand[0]
+            chosen_player.cardsInHand.remove(card)
+            chosen_player.cardsPlayed.append(card)
             return 1 #akcja na korzyść playera
-        elif player.cardsInHand(0) < chosen_player.cardsInHand(0):
+        elif (player.cardsInHand[0].value < chosen_player.cardsInHand[0].value):
             player.active = False
+            card = player.cardsInHand[0]
+            player.cardsInHand.remove(card)
+            player.cardsPlayed.append(card)
             return 2 #akcja na korzyść chosen_playera
         else:
             return 0 #nic się nie dzieje
@@ -87,7 +90,7 @@ class Four:
         :return: 1
         """
         player.protected = True
-        game.currentInfo += player.name+' jest chroniony do następnej swojej tury'
+        game.currentInfo.append(player.name+' jest chroniony do następnej swojej tury')
         return 1
 
 
@@ -109,9 +112,15 @@ class Five:
         :return: 1
         """
         card = chosen_player.cardsInHand[0]
-        chosen_player.cardsInHand.remove(card) #usuwa kartę z ręki danego gracza
-        chosen_player.add_card(game.choose()) #dobiera nową kartę dla gracza
-        chosen_player.cardsPlayed.append(card) #dodaje kartę do listy odrzuconych kart przez gracza
+        chosen_player.cardsInHand.remove(card)  # usuwa kartę z ręki danego gracza
+        chosen_player.cardsPlayed.append(card)  # dodaje kartę do listy odrzuconych kart przez gracza
+        if (game.cards_in_deck()>0):
+            cardfromdeck=game.choose()
+            game.deck.remove(cardfromdeck)
+            chosen_player.add_card(cardfromdeck) #dobiera nową kartę dla gracza
+        else:
+            game.gameon = False
+            game.currentInfo.append('Koniec gry')
         return 1
 
 
@@ -172,8 +181,8 @@ class Eight:
         """
         player.active = False
         card = player.cardsInHand[0]
-        del player.cardsInHand[0]  # usuwa z ręki wybraną kartę
+        player.cardsInHand.remove(card)  # usuwa z ręki wybraną kartę
         player.cardsPlayed.append(card)  # dodaje ją do listy wyrzuconych kart, bez rozpatrzenia
-        game.currentInfo += player.name+' odpada z rundy, bo nie utrzymał pokoju w galaktyce'
+        game.currentInfo.append(player.name+' odpada z rundy, bo nie utrzymał pokoju w galaktyce')
         return 1
 
